@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
+
     public float m_speed;
 
     public float gravityModifier;
@@ -19,16 +20,30 @@ public class PlayerController : MonoBehaviour
 
     public float m_sens = 5f;
     // Start is called before the first frame update
+
+
+    
+    
+        //Press the space bar to apply no locking to the Cursor
+       
+    
+
     void Start()
     {
+        Cursor.visible = false;
 
+        Cursor.lockState = CursorLockMode.None;
+        // Locks the cursor
+        Cursor.lockState = CursorLockMode.Locked;
+        // Confines the cursor
+        Cursor.lockState = CursorLockMode.Confined;
     }
 
    
     // Update is called once per frame
     void Update()
     {
-
+       
         float yStore = p_pos.y;
 
 
@@ -38,10 +53,16 @@ public class PlayerController : MonoBehaviour
         Vector3 ver_move = transform.forward * Input.GetAxis("Vertical");
         Vector3 hori_move = transform.right * Input.GetAxis("Horizontal");
 
+        
         p_pos = ver_move + hori_move;
         p_pos.Normalize();
         p_pos = p_pos * m_speed * Time.deltaTime;
 
+        //debug start
+        Debug.Log(cam.eulerAngles.x);
+        Debug.Log("\n");
+        //debug end
+        
         p_pos.y = yStore;
         p_pos.y += Physics.gravity.y * gravityModifier * Time.deltaTime;
 

@@ -79,8 +79,10 @@ public class GameManager : MonoBehaviour
     }
     void planttree()
     {
+        
+       
 
-        Vector3 rdposition = new Vector3(Random.Range(-100, 101), transform.position.y, Random.Range(-100, 101));
+        Vector3 rdposition = new Vector3(Random.Range(-50, 101), transform.position.y, Random.Range(-100, 101));
         gameObject.transform.position = rdposition;
         if (Physics.Raycast(transform.position, transform.up * -1, out RaycastHit hit))
         {
