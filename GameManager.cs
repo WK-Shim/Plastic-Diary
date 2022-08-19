@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -32,24 +32,20 @@ public class GameManager : MonoBehaviour
 
         //main scene startup settings
         trash = GameObject.FindWithTag("trash");
-
+        //fundemental object spawn
         progress = ytrash;
-        for (int i = 0; i < mapgoal1 - ytrash; i++)
+        if (ytrash < mapgoal1)
         {
-            Vector3 rdposition = new Vector3(Random.Range(-100, 101), transform.position.y, Random.Range(-100, 101));
-            gameObject.transform.position = rdposition;
-            if (Physics.Raycast(transform.position, transform.up * -1, out RaycastHit hit))
+            for (int i = 0; i < mapgoal1 - ytrash; i++)
             {
-                if (hit.collider.gameObject.tag != "antispawn")
-                {
-                    GameObject prefab = Instantiate(trash.transform.GetChild(Random.Range(0, 1)).gameObject, hit.point, transform.rotation);
-                    prefab.tag = "plastic";
-
-                }
-                else
-                {
-
-                }
+                i -= trash_spawn();
+            }
+        }
+        else
+        {
+            for (int i = 0; i < ytrash - mapgoal1; i++)
+            {
+                i -= tree_spawn();
             }
         }
     }
@@ -63,36 +59,54 @@ public class GameManager : MonoBehaviour
         {
             if (time > 0.01 && progress < mapgoal1)
             {
-                //Instantiate(effect, GameObject.FindWithTag("plastic").transform.position, GameObject.FindWithTag("plastic").transform.rotation);
-                destroytrash();
+                Instantiate(effect, GameObject.FindWithTag("plastic").transform.position, GameObject.FindWithTag("plastic").transform.rotation);
+                destroy_trash();
             }
             else if (time > 0.01 && progress >= mapgoal1 && progress < mapgoal2)
             {
-                planttree();
+                tree_spawn();
             }
         }
     }
-    void destroytrash()
+    void destroy_trash()
     {
         Destroy(GameObject.FindWithTag("plastic"));
         progress += 1;
     }
-    int planttree()
+    int tree_spawn()
     {
 
-        Vector3 rdposition = new Vector3(Random.Range(-50, 50), transform.position.y, Random.Range(-50, 50));
+        Vector3 rdposition = random_position(100);
         gameObject.transform.position = rdposition;
         Debug.DrawRay(transform.position, Vector3.up * -1, Color.green);
         if (Physics.Raycast(transform.position, transform.up * -1, out RaycastHit hit))
         {
             if (hit.collider.gameObject.tag == "antispawn")
             {
-                return 0;
+                return 1;
             }
             GameObject prefab = Instantiate(GameObject.FindWithTag("tree").transform.GetChild(Random.Range(0, GameObject.FindWithTag("tree").transform.childCount)).gameObject, hit.point, transform.rotation);
             progress += 1;
-
         }
         return 0;
+    }
+    int trash_spawn()
+    {
+        Vector3 rdposition = random_position(100);
+        gameObject.transform.position = rdposition;
+        if (Physics.Raycast(transform.position, transform.up * -1, out RaycastHit hit))
+        {
+            if (hit.collider.gameObject.tag != "antispawn")
+            {
+                GameObject prefab = Instantiate(trash.transform.GetChild(Random.Range(0, 1)).gameObject, hit.point, transform.rotation);
+                prefab.tag = "plastic";
+                return 0;
+            }
+        }
+        return 1;
+    }
+    Vector3 random_position(float a)
+    {
+        return(new Vector3(Random.Range(-a, a + 1), transform.position.y, Random.Range(-a, a + 1)));
     }
 }
