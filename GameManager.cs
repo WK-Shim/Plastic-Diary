@@ -25,12 +25,11 @@ public class GameManager : MonoBehaviour
         {
             mapnumber = 1;
         }
-        //StringReader streader = new StringReader(gamegoals.text);
-        //string line = streader.ReadLine();
-        //mapgoal1 = int.Parse(line.Split(',')[mapnumber - 1]);
-        //mapgoal2 = int.Parse(line.Split(',')[mapnumber]);
-        mapgoal1 = 1000;
-        mapgoal2 = 100;
+        StringReader streader = new StringReader(gamegoals.text);
+        string line = streader.ReadLine();
+        mapgoal1 = int.Parse(line.Split(',')[mapnumber - 1]);
+        mapgoal2 = int.Parse(line.Split(',')[mapnumber]);
+
         //main scene startup settings
         trash = GameObject.FindWithTag("trash");
 
@@ -45,12 +44,11 @@ public class GameManager : MonoBehaviour
                 {
                     GameObject prefab = Instantiate(trash.transform.GetChild(Random.Range(0, 1)).gameObject, hit.point, transform.rotation);
                     prefab.tag = "plastic";
-                    test++;
+
                 }
                 else
                 {
-                    i--;
-                    print("1");
+
                 }
             }
         }
