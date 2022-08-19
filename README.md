@@ -1,4 +1,4 @@
-[220820-1
+[220820-1]
 Fixed: trash veriabe nullification, Random out of range, etc.
 added: fundemental tree & trash spawning & despawning system.
 Styled: 
