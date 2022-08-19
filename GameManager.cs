@@ -16,11 +16,12 @@ public class GameManager : MonoBehaviour
     GameObject trash;
     public int mapnumber;
     public TextAsset gamegoals;
+    public int test;
     // Start is called before the first frame update
     void Start()
     {
         //checking goals
-        if (mapnumber == null || mapnumber == 0)
+        if (mapnumber == 0)
         {
             mapnumber = 1;
         }
@@ -29,15 +30,10 @@ public class GameManager : MonoBehaviour
         //mapgoal1 = int.Parse(line.Split(',')[mapnumber - 1]);
         //mapgoal2 = int.Parse(line.Split(',')[mapnumber]);
         mapgoal1 = 1000;
-        mapgoal2 = 2000;
+        mapgoal2 = 100;
         //main scene startup settings
-
         trash = GameObject.FindWithTag("trash");
-        if (ytrash == 0)
-        {
-            print("sd");
-            ytrash = 60;
-        }
+
         progress = ytrash;
         for (int i = 0; i < mapgoal1 - ytrash; i++)
         {
@@ -47,12 +43,14 @@ public class GameManager : MonoBehaviour
             {
                 if (hit.collider.gameObject.tag != "antispawn")
                 {
-                    GameObject prefab = Instantiate(trash.transform.GetChild(Random.Range(0, 2)).gameObject, hit.point, transform.rotation);
+                    GameObject prefab = Instantiate(trash.transform.GetChild(Random.Range(0, 1)).gameObject, hit.point, transform.rotation);
                     prefab.tag = "plastic";
+                    test++;
                 }
                 else
                 {
                     i--;
+                    print("1");
                 }
             }
         }
@@ -67,7 +65,7 @@ public class GameManager : MonoBehaviour
         {
             if (time > 0.01 && progress < mapgoal1)
             {
-                Instantiate(effect, GameObject.FindWithTag("plastic").transform.position, GameObject.FindWithTag("plastic").transform.rotation);
+                //Instantiate(effect, GameObject.FindWithTag("plastic").transform.position, GameObject.FindWithTag("plastic").transform.rotation);
                 destroytrash();
             }
             else if (time > 0.01 && progress >= mapgoal1 && progress < mapgoal2)
@@ -83,15 +81,17 @@ public class GameManager : MonoBehaviour
     }
     int planttree()
     {
-        Vector3 rdposition = new Vector3(Random.Range(-50, 101), transform.position.y, Random.Range(-100, 101));
+
+        Vector3 rdposition = new Vector3(Random.Range(-50, 50), transform.position.y, Random.Range(-50, 50));
         gameObject.transform.position = rdposition;
+        Debug.DrawRay(transform.position, Vector3.up * -1, Color.green);
         if (Physics.Raycast(transform.position, transform.up * -1, out RaycastHit hit))
         {
             if (hit.collider.gameObject.tag == "antispawn")
             {
                 return 0;
             }
-            GameObject prefab = Instantiate(GameObject.FindWithTag("treehaven").transform.GetChild(Random.Range(0, GameObject.FindWithTag("treehaven").transform.childCount)).gameObject, hit.point, transform.rotation);
+            GameObject prefab = Instantiate(GameObject.FindWithTag("tree").transform.GetChild(Random.Range(0, GameObject.FindWithTag("tree").transform.childCount)).gameObject, hit.point, transform.rotation);
             progress += 1;
 
         }
